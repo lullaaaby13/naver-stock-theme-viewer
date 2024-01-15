@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <title>Title</title>
+</head>
+<body onload="getGNB();">
+
+
+
+<script type="text/javascript">
+    var nclk_evt = 3;
+    nclk_do();
+</script>
+
+
+<script type="text/javascript">
+
+
+
+
+    var nsc="finance.stock";
+
+
+
+
+
+    var ccsrv="cc.naver.com";
+
+
+
+
+    var gnb_service='finance';
+
+
+
+    var gnb_logout=document.URL; //GNB에서 로그아웃 후 redirect 될 URL
+    var gnb_searchbox='off'; //미니 검색창을 on 할지 off 할지. default는 off
+    var gnb_shortnick='off'; //닉네임 말줄임(10자)을 on할지 off 할지. default는 off.
+
+
+    var gnb_naverme_layer_open_callback = function(){
+        var naverLayerSize = gnbNaverMeLayer.getLayerSize();
+
+        var me_layers = document.getElementById("me_layers");
+        me_layers.width=naverLayerSize.width;
+        me_layers.height=naverLayerSize.height;};
+
+    var gnb_naverme_layer_close_callback = function(){
+
+        var me_layers = document.getElementById("me_layers");
+        me_layers.width="0";
+        me_layers.height="0";};
+</script>
+
+
+<div id="u_skip">
+    <a href="#menu" tabindex="1"><span>메인 메뉴로 바로가기</span></a>
+
+
+
+    <a href="#start" tabindex="2"><span>본문으로 바로가기</span></a>
+
+
+</div>
+
+
+<div id="header">
+    <div class="header_area">
+        <div class="header_inner">
+            <div class="logo_area">
+                <h1 class="service">
+                    <a href="https://www.naver.com/" class="logo_link" onclick="clickcr(this, 'STA.naver', '', '', event);">
+                        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 11C22 13.1756 21.3549 15.3023 20.1462 17.1113C18.9375 18.9202 17.2195 20.3301 15.2095 21.1627C13.1995 21.9952 10.9878 22.2131 8.85401 21.7886C6.72022 21.3642 4.76021 20.3166 3.22183 18.7782C1.68345 17.2398 0.635805 15.2798 0.211368 13.146C-0.213069 11.0122 0.00476298 8.80047 0.837327 6.79048C1.66989 4.78049 3.07979 3.06253 4.88873 1.85383C6.69768 0.645137 8.82441 0 11 0C13.9174 0 16.7153 1.15893 18.7782 3.22183C20.8411 5.28473 22 8.08262 22 11ZM12.8398 5.83V11.3602L8.98976 5.83H5.83V16.1838H9.1575V10.637L13.0075 16.17H16.1783V5.83H12.8398Z" fill="#000"></path>
+                        </svg>
+                        <span class="blind">네이버</span>
+                    </a>
+                    <a href="https://new-m.pay.naver.com/" class="logo_link" onclick="clickcr(this, 'STA.pay', '', '', event);">
+                        <svg width="37" height="22" viewBox="0 0 37 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M34.4319 5.21944L31.3913 12.1478L27.9518 5.21944H25.3072L30.1783 14.8317L28.1703 19.3358H30.7384L37 5.2331L34.4319 5.21944ZM23.6171 15.9331H21.1037V14.9328C20.1894 15.7342 19.0108 16.1685 17.7953 16.1518C14.7901 16.1518 12.4379 13.692 12.4379 10.5763C12.4379 7.46057 14.7874 5.00079 17.7953 5.00079C19.0104 4.9833 20.189 5.41657 21.1037 6.21701V5.21944H23.6171V15.9331ZM21.3987 10.5899C21.3987 8.57019 19.9891 7.03694 18.1204 7.03694C16.2517 7.03694 14.842 8.57019 14.842 10.5899C14.842 12.6097 16.249 14.1429 18.1204 14.1429C19.9918 14.1429 21.3987 12.596 21.3987 10.5899ZM0.00819554 19.3358H2.63088V15.023C3.52823 15.7695 4.66309 16.1699 5.83001 16.1518C8.83516 16.1518 11.1901 13.692 11.1901 10.5763C11.1901 7.46057 8.83789 5.00079 5.83001 5.00079C4.61166 4.9789 3.42899 5.4126 2.51341 6.21701V5.21944H0L0.00819554 19.3358ZM5.51856 7.03694C7.38722 7.03694 8.79691 8.57019 8.79691 10.5899C8.79691 12.6097 7.38722 14.1429 5.51856 14.1429C3.6499 14.1429 2.24021 12.6097 2.24021 10.5899C2.24021 8.57019 3.63351 7.03694 5.51856 7.03694Z" fill="#000"></path>
+                        </svg>
+                        <span class="blind">페이</span>
+                    </a>
+                    <a href="/" class="logo_link" onclick="clickcr(this, 'STA.finance', '', '', event);">
+                        <svg width="34" height="22" viewBox="0 0 34 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2.43006 8.88998L1.85406 6.99998C5.29206 6.31598 7.00206 5.34398 7.45206 4.31798H2.71806V2.35598H14.3641V4.31798H9.75606C9.70206 4.65998 9.61206 4.98398 9.46806 5.28998L15.2101 6.98198L14.4901 8.88998L8.02806 6.92798C6.84006 7.75598 5.00406 8.40398 2.43006 8.88998ZM0.612061 11.5V9.53798H16.4521V11.5H0.612061ZM6.53406 12.796H10.5301C13.2301 12.796 14.7961 14.128 14.7961 15.91C14.7961 17.71 13.2301 19.024 10.5301 19.024H6.53406C3.85206 19.024 2.28606 17.71 2.28606 15.91C2.28606 14.128 3.85206 12.796 6.53406 12.796ZM6.96606 17.044H10.1161C11.7901 17.044 12.4921 16.594 12.4921 15.892C12.4921 15.19 11.7901 14.776 10.1161 14.776H6.96606C5.29206 14.776 4.57206 15.19 4.57206 15.892C4.57206 16.594 5.29206 17.044 6.96606 17.044Z" fill="#000"></path>
+                            <path d="M25.1904 13.354V11.536H29.4564V2.03198H31.7604V15.334H29.4564V13.354H25.1904ZM21.3384 10.564C20.9244 10.582 20.5464 10.582 20.1684 10.582H17.4504L17.3604 8.61998H20.3844C21.5004 8.61998 22.9584 8.56598 24.4884 8.45798C24.7224 6.99998 24.8484 5.63198 24.8664 4.62398H18.4404V2.66198H27.0984V3.56198C27.0984 5.16398 26.9724 6.76598 26.7564 8.25998L28.2684 8.09798L28.5024 10.006C26.9724 10.222 25.2264 10.384 23.5704 10.474C23.4984 11.5 23.3904 12.562 23.2644 13.714L21.0684 13.588C21.1764 12.508 21.2664 11.536 21.3384 10.564ZM22.4724 14.254V16.756H32.3724V18.844H20.1684V14.254H22.4724Z" fill="#000"></path>
+                        </svg>
+                        <span class="blind">증권</span>
+                    </a>
+                </h1>
+            </div>
+
+            <div class="right_area">
+                <div class="search_area">
+                    <form name="search" action="/search/search.naver" method="get" onsubmit="return delayed_submit(this)" style="margin:0; padding:0;">
+                        <label for="stock_items" class="blind">증권 종목명·지수명 검색</label>
+                        <input type="text" id="stock_items" name="query" title="종목명·지수명 검색" class="search_input" placeholder="종목명·지수명 입력" accesskey="s" autocomplete="off">
+                        <input type="hidden" id="_endUrl" name="endUrl" value="">
+                        <button type="button" class="search_button" onclick="clickcr(this, 'STA.search', '', '', event);">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M6.9999 2.59996C4.56985 2.59996 2.5999 4.56991 2.5999 6.99996C2.5999 9.43002 4.56985 11.4 6.9999 11.4C9.42996 11.4 11.3999 9.43002 11.3999 6.99996C11.3999 4.56991 9.42996 2.59996 6.9999 2.59996ZM1.3999 6.99996C1.3999 3.90717 3.90711 1.39996 6.9999 1.39996C10.0927 1.39996 12.5999 3.90717 12.5999 6.99996C12.5999 10.0928 10.0927 12.6 6.9999 12.6C3.90711 12.6 1.3999 10.0928 1.3999 6.99996Z" fill="#404048"></path>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M10.2421 10.2424C10.4765 10.0081 10.8564 10.0081 11.0907 10.2424L14.424 13.5758C14.6583 13.8101 14.6583 14.19 14.424 14.4243C14.1897 14.6586 13.8098 14.6586 13.5755 14.4243L10.2421 11.091C10.0078 10.8567 10.0078 10.4768 10.2421 10.2424Z" fill="#404048"></path>
+                            </svg>
+                            <span class="blind">검색</span>
+                        </button>
+                        <div class="auto_area">
+                            <span class="blind">자동완성</span>
+                            <div id="autoFrame" style="display: none;">
+                                <div class="wrap" id="atcmp" style="display:none;">
+                                    <div class="wrap_in">
+                                        <div class="words">
+                                            <ul class="_resultBox">
+                                                <li>
+                                                    <a href="#" onclick="clickcr(this, 'AUT.list', '', '', event); return false;" class="_au_real_list">
+                                                        <span class="num _au_real_list">@code@</span>
+                                                        <span class="_au_real_list">@txt@</span>
+                                                        <span class="type _au_real_list">@market@</span>
+                                                    </a>
+                                                    <div style="display:none" class="_au_full">@full_txt@</div>
+                                                    <div style="display:none" class="_au_code">@in_code@</div>
+                                                    <div style="display:none" class="_au_name">@in_name@</div>
+                                                    <div style="display:none" class="_au_link">@in_link@</div>
+                                                    <div style="display:none" class="_au_market">@in_market@</div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- 현재 자동완성 기능을 사용하고 계십니다 -->
+                                    <div class="wrap" id="atcmpIng" style="display:none;">
+                                        <div class="wrap_in">
+                                            <div class="words">
+                                                <p class="msg">
+                                                    현재 자동완성 기능을 사용하고 계십니다.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--// 현재 자동완성 기능을 사용하고 계십니다 -->
+                                    <!-- 자동완성 기능이 활성화 -->
+                                    <div class="wrap" id="atcmpStart" style="display:none;">
+                                        <div class="wrap_in">
+                                            <div class="words">
+                                                <p class="msg">
+                                                    자동완성 기능이 활성화되었습니다.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="gnb_area">
+                    <div id="gnb" class=""><strong class="blind">사용자 링크</strong><ul class="gnb_lst" id="gnb_lst" style="display: block;"><li class="gnb_login_li" id="gnb_login_layer" style="display: none;"><a class="gnb_btn_login" href="https://nid.naver.com/nidlogin.login" id="gnb_login_button"><span class="gnb_bg"></span><span class="gnb_bdr"></span><span class="gnb_txt">로그인</span></a></li><li class="gnb_my_li" id="gnb_my_layer" style="display: inline-block;"><div class="gnb_my_namebox" id="gnb_my_namebox" style="background-image: url(&quot;https://ssl.pstatic.net/static/common/gnb/2014/ico_arrow_bl1.gif&quot;);"><a href="javascript:;" id="gnb_my" class="gnb_my" onclick="gnbUserLayer.clickToggle(); return false;"><img id="gnb_profile_img" src="https://phinf.pstatic.net/contact/20190324_23/1553370259611hyhfJ_PNG/avatar_profile.png?type=s80" onerror="this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAMAAAC5zwKfAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADNQTFRF8PDw5ubm+vr6+/v76enp+Pj47e3t5+fn9/f37Ozs9PT08vLy7+/v6urq9fX15OTk/f39pqwodgAAAQNJREFUeNrs11EOgyAMgOEWUAF19f6n3cMeplJHoSZbsv4H+DIWaCNsNwcGGmiggQZ+D/Q5reuasr8H9ID0CsHfALpA74JTgwPSPnRK0Ac6FrwOXOjcogIdlTkNuDDgogGRAVEBDsQ19IMzC879ILAgGNgAZhbMP3RttonxJs1Lgea/sDYcyreHXjW+oPUHVid2MWC1K+A0sqsDW7CksGmlCNZoFt9pIfjYgY8bwMMexUENQuOtqYCxfHtT7AddYodDcp0gIPEh9IBxous+nBuaTis4Nw/OSLVwloN+JEmjGJR5FyIDRpIWZeAoBkcZGMRgkIEkz0D7GjXQQAMN/GvwKcAAEGGHJh0mmaAAAAAASUVORK5CYII='" width="26" height="26" alt="내 프로필 이미지" style="display: inline-block;"><span id="gnb_profile_filter_mask" class="filter_mask" style="display: inline-block;"></span> <span class="gnb_name" id="gnb_name1">동성</span><em class="blind">내정보 보기</em><span class="ico_arrow"></span></a><a href="#" class="gnb_emp" id="gnb_emp" style="display: none;">(임직원혜택)</a></div><div class="gnb_my_lyr" id="gnb_my_lyr"><div class="gnb_my_content"><div class="gnb_img_area"><span class="gnb_mask"></span><img src="https://phinf.pstatic.net/contact/20190324_23/1553370259611hyhfJ_PNG/avatar_profile.png?type=s160" onerror="this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAMAAAC5zwKfAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADNQTFRF8PDw5ubm+vr6+/v76enp+Pj47e3t5+fn9/f37Ozs9PT08vLy7+/v6urq9fX15OTk/f39pqwodgAAAQNJREFUeNrs11EOgyAMgOEWUAF19f6n3cMeplJHoSZbsv4H+DIWaCNsNwcGGmiggQZ+D/Q5reuasr8H9ID0CsHfALpA74JTgwPSPnRK0Ac6FrwOXOjcogIdlTkNuDDgogGRAVEBDsQ19IMzC879ILAgGNgAZhbMP3RttonxJs1Lgea/sDYcyreHXjW+oPUHVid2MWC1K+A0sqsDW7CksGmlCNZoFt9pIfjYgY8bwMMexUENQuOtqYCxfHtT7AddYodDcp0gIPEh9IBxous+nBuaTis4Nw/OSLVwloN+JEmjGJR5FyIDRpIWZeAoBkcZGMRgkIEkz0D7GjXQQAMN/GvwKcAAEGGHJh0mmaAAAAAASUVORK5CYII='" width="80" height="80" alt="프로필 이미지"><a href="https://nid.naver.com/user2/api/naverProfile?m=checkIdType" class="gnb_change"><span class="blind">프로필 사진 변경</span></a></div><div class="gnb_txt_area"><p class="gnb_account"><span class="gnb_name" id="gnb_name2"><a class="gnb_nick" href="https://nid.naver.com/user2/api/naverProfile?m=checkIdType">동성</a>님</span><a class="gnb_btn_login" href="https://nid.naver.com/nidlogin.logout?returl=https%3A%2F%2Ffinance.naver.com%2Fsise%2Fsise_group_detail.naver%3Ftype%3Dtheme%26no%3D176" id="gnb_logout_button"><span class="gnb_bg"></span><span class="gnb_bdr"></span><span class="gnb_txt">로그아웃</span></a></p><a href="https://mail.naver.com" class="gnb_mail_address">sds901234@naver.com</a><ul class="gnb_edit_lst"><li class="gnb_info"><a href="https://nid.naver.com/user2/help/myInfo?menu=home">네이버ID</a></li><li class="gnb_secure" id="gnb_secure_lnk"><a href="https://nid.naver.com/user2/help/myInfo?m=viewSecurity&amp;menu=security">보안설정</a></li><li class="gnb_cert" id="gnb_cert_lnk"><a href="https://nid.naver.com/user2/eSign/v1/home/land" id="gnb_cert_lnk_a">내인증서</a></li></ul><div class="gnb_pay_check" id="gnb_pay_check"><p class="gnb_membership" style="display: inline-block;" id="gnb_membership"><a href="https://nid.naver.com/membership/my" class="gnb_my_membership" id="gnb_my_membership"><i class="blind">네이버 멤버쉽</i></a></p><em>N Pay</em><a href="https://pay.naver.com" id="gnb_pay_point"><span style="display: none">내 페이포인트</span></a></div></div></div><div class="gnb_my_community"><a href="https://blog.naver.com/MyBlog.naver" class="gnb_blog">내 블로그</a><a href="https://section.cafe.naver.com" class="gnb_cafe">가입한 카페</a><a href="https://pay.naver.com" class="gnb_pay" id="gnb_pay_banner_membership" style="display: block;"><span>N Pay</span></a><a href="https://nid.naver.com/membership/join" class="gnb_pay" id="gnb_pay_banner_newbie" style="display: none;"><i>네이버 멤버십 최대 5% 적립</i></a></div><a href="#" class="gnb_my_interface" style="display:none"><span class="blind">환경설정</span></a></div><iframe id="gnb_my_lyr_iframe" title="빈 프레임" class="gnb_pad_lyr" name="padding" width="0" height="0" scrolling="no" frameborder="0" style="top:34px;right:-4px;width:320px;height:158px;display:none;opacity:0;-ms-filter:alpha(opacity=0)"></iframe></li><li class="gnb_talk_li" id="gnb_talk_layer" style="display: inline-block;"><a href="https://talks.naver.com/?frm=pcgnb" class="gnb_talk" target="_blank" rel="noopener noreferrer"><span class="blind">네이버톡</span><span class="gnb_icon"></span><em class="gnb_ico_num" id="gnb_talk_menu" style="display:none"><span class="gnb_ico_new"><span class="gnb_count" id="gnb_talk_count" style="display: inline-block;"></span></span></em><span class="ico_arrow"></span></a></li><li class="gnb_notice_li" id="gnb_notice_layer" style="display: inline-block;"><a href="https://m.notify.naver.com/?from=pcmain" class="gnb_notice" target="_blank" rel="noopener noreferrer"><span class="blind">알림</span><span class="gnb_icon"></span><em class="gnb_ico_num" id="gnb_me_menu" style="display: block;"><span class="gnb_ico_new"><span class="gnb_count" id="gnb_me_count" style="display: inline-block;">2</span></span></em><span class="ico_arrow"></span></a><div class="gnb_notice_lyr" id="gnb_notice_lyr"><div class="svc_noti svc_panel"><div class="svc_scroll"><div class="svc_head"><strong class="gnb_tit">전체 알림</strong><div class="task_right"><button onclick="gnbNaverMeLayer.deleteReadList(this, event);" id="gnb_btn_read_noti_del">읽은 알림 삭제</button><button onclick="gnbNaverMeLayer.showDeleteAlert();" id="gnb_btn_all_noti_del">모두 삭제</button></div></div><div class="svc_body" id="gnb_naverme_layer"></div></div><div class="gnb_ly_alert" id="gnb_ly_alert" style="display: none;"><p class="gnb_msg"><strong>알림을 모두 삭제하시겠습니까?</strong></p><div class="gnb_btns"><button id="ly_alert_confirm" onclick="gnbNaverMeLayer.deleteAllList(this, event);">확인</button><button onclick="gnbNaverMeLayer.hideDeleteAlert();">취소</button></div><button class="gnb_btn_close" onclick="gnbNaverMeLayer.hideDeleteAlert();"><i>레이어 닫기</i></button></div><a href="https://m.notify.naver.com/?from=pcmain" class="gnb_notice_all">내 알림 전체보기</a></div></div><iframe id="gnb_notice_lyr_iframe" title="빈 프레임" class="gnb_pad_lyr" name="padding" width="0" height="0" scrolling="no" frameborder="0" style="top:34px;right:-4px;width:299px;height:332px;display:none;opacity:0;-ms-filter:alpha(opacity=0)"></iframe></li><li class="mail_li" id="gnb_mail_layer" style="display: inline-block;"><a href="https://mail.naver.com" class="gnb_mail"><span class="blind">메일</span><span class="gnb_icon"></span><em class="gnb_ico_num" id="gnb_mail_menu" style="display: block;"><span class="gnb_ico_new"><span class="gnb_count" id="gnb_mail_count" style="display: inline-block;">99<span class="plus">+</span></span></span></em></a></li><li class="gnb_service_li" id="gnb_service_layer" style="display: inline-block;"><a href="javascript:;" class="gnb_service" onclick="gnbMoreLayer.clickToggle(); return false;"><span class="blind">서비스 더보기</span><span class="gnb_icon"></span><span class="ico_arrow"></span></a><div class="gnb_service_lyr" id="gnb_service_lyr"><div class="gnb_favorite_search" id="gnb_favorite_search"><div class="gnb_favorite_area"><div class="gnb_favorite_lstwrp"><div class="gnb_first_visit" style="display:none"><span class="blind">나만의 즐겨찾기를 추가해 보세요!</span><a href="#" class="gnb_close"><span class="blind">닫기</span></a></div><strong class="blind">즐겨찾는 서비스</strong><ul class="gnb_favorite_lst" id="gnb_favorite_lst"><li class="gnb_add"><a href="#"><span class="ic_add"></span>추가</a></li><li class="gnb_add"><a href="#"><span class="ic_add"></span>추가</a></li><li class="gnb_add"><a href="#"><span class="ic_add"></span>추가</a></li><li class="gnb_add"><a href="#"><span class="ic_add"></span>추가</a></li></ul><a href="#" class="gnb_my_interface" onclick="gnbMoreLayer.clickToggleWhole(); return false;"><span class="blind">즐겨찾기 설정</span></a></div></div><div class="gnb_search_area"><div class="gnb_search_box" onmouseover="gnb_search.mouseOver(this);" onmouseout="gnb_search.mouseOut(this);"><input id="gnb_svc_search_input" type="text" title="서비스 검색" value="더 많은 서비스를 간편하게 시작하세요!" onfocus="gnb_search.clearInput(this);" onblur="gnb_search.resetInput(this);" onkeydown="gnb_search.keyDown(event);" onkeyup="gnb_search.keyUp(event);"><a href="#" class="gnb_del_txt" id="gnb_del_txt" style="display:none"><span class="blind">삭제</span></a><div class="gnb_pop_input" id="gnb_pop_input" tabindex="0" onfocus="gnb_search.searchPopOnMouse = true; return false;" onfocusout="gnb_search.searchPopOnMouse = false; return false;" onmouseover="gnb_search.searchPopOnMouse = true; return false;" onmouseout="gnb_search.searchPopOnMouse = false; return false;" style="display:none"><ul class="gnb_pop_lst"></ul></div></div><div id="gnb_search_lstwrp" class="gnb_search_lstwrp"><ul class="gnb_search_lst gnb_first"><li class="gnb_first"><a id="gnb_search_lst_first_item" href="https://cafe.naver.com/">카페</a></li><li><a href="https://news.naver.com/">뉴스</a></li><li><a href="https://map.naver.com/">지도</a></li><li><a href="https://sports.news.naver.com/">스포츠</a></li><li><a href="https://game.naver.com/">게임</a></li></ul><ul class="gnb_search_lst"><li class="gnb_first"><a href="https://section.blog.naver.com/">블로그</a></li><li><a href="https://post.naver.com/main.nhn">포스트</a></li><li><a href="https://dict.naver.com/">사전</a></li><li><a href="https://kin.naver.com/">지식iN</a></li><li><a href="https://weather.naver.com/">날씨</a></li></ul><ul class="gnb_search_lst"><li class="gnb_first"><a href="https://mail.naver.com/">메일</a></li><li><a href="https://stock.naver.com/">증권</a></li><li><a href="https://land.naver.com/">부동산</a></li><li><a href="https://vibe.naver.com/today/">VIBE</a></li><li><a href="https://book.naver.com">책</a></li></ul><ul class="gnb_search_lst"><li class="gnb_first"><a href="https://shopping.naver.com/">쇼핑</a></li><li><a href="https://comic.naver.com/">웹툰</a></li><li><a href="https://movie.naver.com/">영화</a></li><li><a href="https://mybox.naver.com/">MYBOX</a></li><li><a href="https://novel.naver.com/webnovel/weekday">웹소설</a></li></ul></div></div><div class="gnb_banner"><a href="https://campaign.naver.com/npay/rediret/index.nhn" class="gnb_service_event"><img id="gnb_promo" alt="N페이, 이벤트 참여하면 포인트 적립!" width="265" height="47" src="https://ssl.pstatic.net/static/common/gnb/banner/promo_npay_2309.png"></a></div><div class="gnb_linkwrp"><a href="https://www.naver.com/more.html" class="gnb_service_all" id="gnb_service_all">전체 서비스 보기</a></div></div><div class="gnb_svc_more" id="gnb_svc_more" style=""><strong class="blind">네이버 주요 서비스</strong><div class="gnb_bg_top"></div><div class="gnb_svc_hd" id="gnb_svc_hd" tabindex="0"><strong class="gnb_svc_tit">바로가기 설정</strong><span class="link"><a href="https://www.naver.com/more.html">전체 서비스 보기</a></span></div><div class="gnb_svc_lstwrp"><div class="gnb_svc_lst1"><ul class="gnb_first"><li><input type="checkbox" id="nsvc_game" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_game">게임</label></li><li><input type="checkbox" id="nsvc_weather" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_weather">날씨</label></li><li><input type="checkbox" id="nsvc_shopping" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_shopping">네이버쇼핑</label></li><li><input type="checkbox" id="nsvc_navercast" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_navercast">네이버캐스트</label></li><li class="gnb_event"><input type="checkbox" id="nsvc_naverpay" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_naverpay">네이버페이<em class="ic_gnb_new">New</em></label></li><li><input type="checkbox" id="nsvc_mybox" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_mybox">네이버 MYBOX</label></li><li><input type="checkbox" id="nsvc_news" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_news">뉴스</label></li><li><input type="checkbox" id="nsvc_comic" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_comic">웹툰</label></li><li><input type="checkbox" id="nsvc_memo" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_memo">메모</label></li><li><input type="checkbox" id="nsvc_mail" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_mail">메일</label></li><li><input type="checkbox" id="nsvc_land" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_land">부동산</label></li><li><input type="checkbox" id="nsvc_bookmark" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_bookmark">북마크</label></li><li><input type="checkbox" id="nsvc_blog" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_blog">블로그</label></li></ul><ul class=""><li><input type="checkbox" id="nsvc_dic" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_dic">사전</label></li><li><input type="checkbox" id="nsvc_smartboard" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_smartboard">스마트보드</label></li><li><input type="checkbox" id="nsvc_sports" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_sports">스포츠</label></li><li><input type="checkbox" id="nsvc_series" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_series">시리즈</label></li><li><input type="checkbox" id="nsvc_serieson" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_serieson">시리즈on</label></li><li><input type="checkbox" id="nsvc_movie" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_movie">영화</label></li><li><input type="checkbox" id="nsvc_office" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_office">오피스</label></li><li><input type="checkbox" id="nsvc_novel" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_novel">웹소설</label></li><li><input type="checkbox" id="nsvc_contact" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_contact">주소록</label></li><li><input type="checkbox" id="nsvc_finance" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_finance">증권(금융)</label></li><li><input type="checkbox" id="nsvc_map" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_map">지도</label></li><li><input type="checkbox" id="nsvc_kin" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_kin">지식iN</label></li><li><input type="checkbox" id="nsvc_terms" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_terms">지식백과</label></li></ul><ul class=""><li><input type="checkbox" id="nsvc_book" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_book">책</label></li><li><input type="checkbox" id="nsvc_cafe" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_cafe">카페</label></li><li><input type="checkbox" id="nsvc_calendar" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_calendar">캘린더</label></li><li><input type="checkbox" id="nsvc_navertv" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_navertv">네이버TV</label></li></ul></div><div class="svc_lst2"><div class="svc_spc gnb_first"><strong><a href="https://dict.naver.com/">어학사전</a></strong><ul class=""><li><input type="checkbox" id="nsvc_krdic" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_krdic">국어사전</label></li><li><input type="checkbox" id="nsvc_endic" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_endic">영어/영영사전</label></li><li><input type="checkbox" id="nsvc_hanja" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_hanja">한자사전</label></li><li><input type="checkbox" id="nsvc_jpdic" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_jpdic">일어사전</label></li><li><input type="checkbox" id="nsvc_cndic" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_cndic">중국어사전</label></li><li><input type="checkbox" id="nsvc_frdic" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_frdic">프랑스어사전</label></li><li><input type="checkbox" id="nsvc_dedic" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_dedic">독일어사전</label></li><li><input type="checkbox" id="nsvc_rudic" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_rudic">러시아어사전</label></li><li><input type="checkbox" id="nsvc_vndic" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_vndic">베트남어사전</label></li><li><input type="checkbox" id="nsvc_spdic" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_spdic">스페인어사전</label></li><li><input type="checkbox" id="nsvc_papago" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_papago">파파고</label></li></ul></div><div class="svc_spc"><strong>인기/신규서비스</strong><ul class=""><li><input type="checkbox" id="nsvc_grafolio" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_grafolio">그라폴리오</label></li><li><input type="checkbox" id="nsvc_post" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_post">포스트</label></li><li><input type="checkbox" id="nsvc_band" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_band">밴드</label></li><li><input type="checkbox" id="nsvc_line" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_line">라인</label></li><li class="gnb_event"><input type="checkbox" id="nsvc_vibe" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_vibe">VIBE<em class="ic_gnb_new">New</em></label></li><li><input type="checkbox" id="nsvc_pcontents" name="selmenu" class="gnb_input_check" value=""> <label for="nsvc_pcontents">프리미엄콘텐츠</label></li></ul></div></div></div><div class="svc_btnwrp"><div class="svc_btns"><button class="gnb_save" onclick="if(gnbFavorite.addService()){gnbMoreLayer.clickToggleWhole()} return false;"><strong class="blind">확인</strong></button><button class="gnb_close" onclick="gnbFavorite.cancel(); return false;"><span class="blind">취소</span></button><button class="gnb_return" onclick="gnbFavorite.resetService(); return false;"><span class="blind">초기 설정으로 변경</span></button></div></div><div class="gnb_bg_btm"></div></div></div><iframe id="gnb_service_lyr_iframe" title="빈 프레임" class="gnb_pad_lyr" name="padding" width="0" height="0" scrolling="no" frameborder="0" style="display:none;top:34px;right:297px;width:585px;height:385px;opacity:0;-ms-filter:alpha(opacity=0)"></iframe><iframe id="gnb_svc_more_iframe" title="빈 프레임" class="gnb_pad_lyr" name="padding" width="0" height="0" scrolling="no" frameborder="0" style="display:none;top:34px;right:-4px;width:295px;height:385px;opacity:0;-ms-filter:alpha(opacity=0)"></iframe></li></ul>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="lnb_area ">
+        <div class="lnb_inner">
+            <div id="menu">
+                <ul class="menu">
+                    <li class="m1 first "><a href="/" onclick="clickcr(this, 'LNB.home', '', '', event);"><span class="tx">증권 홈</span></a></li>
+                    <li class="m2 on"><a href="/sise/" onclick="clickcr(this, 'LNB.sise', '', '', event);"><span class="tx">국내증시</span><span class="blind">선택됨</span></a></li>
+                    <li class="m3 "><a href="/world/" onclick="clickcr(this, 'LNB.world', '', '', event);"><span class="tx">해외증시</span></a></li>
+                    <li class="m4 "><a href="/marketindex/" onclick="clickcr(this, 'LNB.market', '', '', event);"><span class="tx">시장지표</span></a></li>
+                    <li class="m6 "><a href="/research/" onclick="clickcr(this, 'LNB.research', '', '', event);"><span class="tx">리서치</span></a></li>
+                    <li class="m7 "><a href="/news/"><span class="tx">뉴스</span></a></li>
+                    <li class="m8 "><a href="/mystock/" onclick="clickcr(this, 'LNB.mystock', '', '', event);"><span class="tx">MY</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <script type="text/JavaScript">
+        /* lcs 집계 */
+        ;(function(){
+            var eventType = "onpageshow" in window ? "pageshow" : "load";
+            jindo.$Fn(function(){
+                lcs_do();
+            }).attach(window, eventType);
+        })();
+
+        /* 검색 자동완성 [ 인자1 : 검색input의 ID, 인자2 : iframe 태그 ID ]   */
+        // AutoComplete 생성
+        var acDomain = "ac.stock.naver.com";
+        if (location.hostname.indexOf("staging-") > -1) {
+            acDomain = "staging-" + acDomain;
+        } else if (location.hostname.indexOf("dev-") > -1 || location.hostname.indexOf("localhost") > -1 || location.hostname.indexOf("local-") > -1) {
+            acDomain = "dev-" + acDomain;
+        }
+
+        var acUrl = "https://" + acDomain + "/ac";
+
+        smartSearch = new nhn.Autocomplete(
+            // InputManager 생성
+            new nhn.AcInputManager(jindo.$("stock_items")),
+            // DataManager 생성
+            new nhn.AcDataManager(acUrl, "xhr", "get", {}),
+            // ViewManager 생성
+            new nhn.AcStockViewManager(jindo.$("autoFrame"), jindo.$("nautocomplete"), {
+                strMax: 200,
+                listMax: [7, 2, 2],
+                aRedirectUrl : [
+                    "https://finance.naver.com",
+                    "https://finance.naver.com",
+                    "https://finance.naver.com"]}),
+            // Autocomplete Option
+            {formId:"search", cookieDomain:location.hostname, cookieName:"NaverCommonStock_disable"});
+
+        smartSearch.attach({
+            onFocus: function () {
+                var weInput = jindo.$Element('stock_items');
+                if (weInput && weInput.hasClass("snb_default")) {
+                    weInput.text("");
+                    weInput.removeClass('snb_default');
+                }
+            }
+        });
+
+        /* 통합검색  start ----->  */
+        var sSearchHintText = '종목명·지수명·환율명·원자재명 입력';
+        function itegrationSearch() {
+            var query = jindo.$('stock_items').value;
+
+            if ( query == ''  || encodeURIComponent(query) == encodeURIComponent(sSearchHintText))
+            {
+                alert ( '검색어를 입력해 주세요.' );
+                return;
+            }
+
+            var url = location.protocol + "//search.naver.com/search.naver?sm=sta_hty.finance&where=nexearch&ie=UTF8&query=" + encodeURIComponent(query);
+            window.open(url, "_blank");
+
+            return false;
+        }
+
+        function delayed_submit(object) {
+            if (navigator.userAgent.indexOf('MSIE') == -1) {
+                window.setTimeout(function() {stock_search(object)}, 300);
+            } else {
+                stock_search(object);
+            }
+            return false;
+        }
+
+        function stock_search (object)
+        {
+            // endUrl check
+            if (object.endUrl.value) {
+                location.href = object.endUrl.value;
+                return;
+            }
+
+            // query check
+            query = object.query.value.replace(/^\s*/,'').replace(/\s*$/,'');	// trim
+            object.query.value=query;
+
+            if ( query == '' || query == sSearchHintText.replace(/^\s*/,'').replace(/\s*$/,''))
+            {
+                alert ( '검색어를 입력해 주세요.' );
+                return;
+            }
+            else {
+                object.submit();
+            }
+        }
+        /* <---------- 통합검색  end */
+
+        function popup()
+        {
+            win = window.open('/template/group_limit_pop.jsp','finan_popup','width=569 height=278 scrollbars=no status=no');
+            win.focus();
+        }
+    </script>
+
+    <iframe id="me_layers" name="test" title="네이버미 영역" width="0" height="0" scrolling="no" frameborder="0" style="display:block;top: 22px; right: 209px; position: absolute; z-index: 15;"></iframe>
+</div>
+<div id="wrap">
+
+    <div class="banner_smart">
+        <div id="_SmartChannelTopBanner"><div style="width: 100%; height: auto; margin: 0px auto; line-height: 0;"><iframe id="_SmartChannelTopBanner_tgtLREC" frameborder="no" scrolling="no" tabindex="0" name="" title="AD" style="width: 100%; height: 80px; visibility: inherit; border: 0px; vertical-align: bottom;"></iframe></div></div>
+    </div>
+
+
+    <!-- //  global include -->
+    <script language="JavaScript">
+        function mouseOver(obj){
+            obj.style.backgroundColor="#f6f4e5";
+        }
+        function mouseOut(obj){
+            obj.style.backgroundColor="#ffffff";
+        }
+        function mouseThemeToggle(obj) {
+            jindo.$Element(obj.nextElementSibling).toggle();
+        }
+
+    </script>
+
+
+
+
+
+
+
+
+    <div id="newarea">
+        <!-- leftmenu -->
+        <div class="snb snb2">
+            <h2 class="h_sise"><a href="/sise/"><span class="blind">국내증시</span></a></h2>
+            <ul class="nav1">
+                <li class="frst"><strong class="lst_sise"><span class="blind">주요시세정보</span></strong>
+                    <ul class="sub">
+                        <li class="type1 lst1_1"><a href="/sise/sise_index.naver?code=KOSPI" onclick="clickcr(this,'siu.1','','',event);" class="off"><span class="blind">코스피</span></a></li>
+                        <li class="type1 lst1_2"><a href="/sise/sise_index.naver?code=KOSDAQ" onclick="clickcr(this,'siu.2','','',event);" class="off"><span class="blind">코스닥</span></a></li>
+                        <li class="type1 lst1_3"><a href="/sise/sise_index.naver?code=FUT" onclick="clickcr(this,'siu.3','','',event);" class="off"><span class="blind">선물</span></a></li>
+                        <li class="type1 lst1_26"><a href="/sise/sise_index.naver?code=KPI200" onclick="clickcr(this,'siu.26','','',event);" class="off"><span class="blind">코스피200</span></a></li>
+                        <li class="type1 lst1_31"><a href="/sise/konex.naver" onclick="clickcr(this,'siu.konex','','',event);" class="off"><span class="blind">코넥스</span></a></li>
+                        <li class="type1 lst1_16"><a href="/sise/sise_market_sum.naver" onclick="clickcr(this,'siu.16','','',event);" class="off"><span class="blind">시가총액</span></a></li>
+                        <li class="type1 lst1_32"><a href="/sise/dividend_list.naver" onclick="clickcr(this,'siu.dividend','','',event);" class="off"><span class="blind">배당</span></a></li>
+                        <li class="type1 lst1_4"><a href="/sise/sise_group.naver?type=upjong" onclick="clickcr(this,'siu.4','','',event);" class="off"><span class="blind">업종</span></a></li>
+                        <li class="type1 lst1_5"><a href="/sise/theme.naver" onclick="clickcr(this,'siu.5','','',event);" class="on"><span class="blind">테마</span></a></li>
+                        <li class="type1 lst1_30"><a href="/sise/sise_group.naver?type=group" onclick="clickcr(this,'siu.30','','',event);" class="off"><span class="blind">그룹사</span></a></li>
+                        <li class="type1 lst1_27 "><a href="/sise/etf.naver" onclick="clickcr(this,'siu.27','','',event);" class="off"><span class="blind">ETF</span></a></li>
+                        <li class="type1 lst1_34"><a href="/sise/etn.naver" onclick="clickcr(this,'siu.34','','',event);" class="off"><span class="blind">ETN</span></a></li>
+                        <li class="type1 lst1_8 "><a href="/sise/sise_rise.naver" onclick="clickcr(this,'siu.8','','',event);" class="off"><span class="blind">상승</span></a></li>
+                        <li class="type1 lst1_9 "><a href="/sise/sise_steady.naver" onclick="clickcr(this,'siu.9','','',event);" class="off"><span class="blind">보합</span></a></li>
+                        <li class="type1 lst1_10"><a href="/sise/sise_fall.naver" onclick="clickcr(this,'siu.10','','',event);" class="off"><span class="blind">하락</span></a></li>
+                        <li class="type1 lst1_6"><a href="/sise/sise_upper.naver" onclick="clickcr(this,'siu.6','','',event);" class="off"><span class="blind">상한가</span></a></li>
+                        <li class="type1 lst1_7"><a href="/sise/sise_lower.naver" onclick="clickcr(this,'siu.7','','',event);" class="off"><span class="blind">하한가</span></a></li>
+                        <li class="type1 lst1_15 "><a href="/sise/sise_low_up.naver" onclick="clickcr(this,'siu.15','','',event);" class="off"><span class="blind">급등</span></a></li>
+                        <li class="type1 lst1_14 "><a href="/sise/sise_high_down.naver" onclick="clickcr(this,'siu.14','','',event);" class="off"><span class="blind">급락</span></a></li>
+                        <li class="type2 lst1_11"><a href="/sise/sise_quant.naver" onclick="clickcr(this,'siu.11','','',event);" class="off"><span class="blind">거래상위</span></a></li>
+                        <li class="type1 lst1_12 "><a href="/sise/sise_quant_high.naver" onclick="clickcr(this,'siu.12','','',event);" class="off"><span class="blind">급증</span></a></li>
+                        <li class="type1 lst1_13 "><a href="/sise/sise_quant_low.naver" onclick="clickcr(this,'siu.13','','',event);" class="off"><span class="blind">급감</span></a></li>
+                        <li class="lst1_23"><a href="/sise/sise_trans_style.naver" onclick="clickcr(this,'siu.23','','',event);" class="off"><span class="blind">투자자별매매동향</span></a></li>
+                        <li class="type1 lst1_17"><a href="/sise/sise_deal_rank.naver" onclick="clickcr(this,'siu.17','','',event);" class="off"><span class="blind">외국인매매</span></a></li>
+                        <li class="type1 lst1_18"><a href="/sise/sise_deal_rank.naver?investor_gubun=1000" onclick="clickcr(this,'siu.18','','',event);" class="off"><span class="blind">기관매매</span></a></li>
+                        <li class="lst1_19"><a href="/sise/sise_program.naver" onclick="clickcr(this,'siu.19','','',event);" class="off"><span class="blind">프로그램매매동향</span></a></li>
+                        <li class="lst1_22"><a href="/sise/sise_deposit.naver" onclick="clickcr(this,'siu.22','','',event);" class="off"><span class="blind">증시자금동향</span></a></li>
+                        <li class="lst1_21"><a href="/sise/sise_new_stock.naver" onclick="clickcr(this,'siu.21','','',event);" class="off"><span class="blind">신규상장</span></a></li>
+                        <li class="lst1_24 "><a href="/sise/sise_foreign_hold.naver" onclick="clickcr(this,'siu.24','','',event);" class="off"><span class="blind">외국인보유</span></a></li>
+                        <li class="lst1_25 "><a href="/sise/market3news_list.naver" onclick="clickcr(this,'siu.25','','',event);" class="off"><span class="blind">장외시세</span></a></li>
+                        <li class="lst1_33 "><a href="/sise/ipo.naver" onclick="clickcr(this,'siu.33','','',event);" class="off"><span class="blind">IPO</span></a></li>
+                    </ul>
+                </li>
+                <li><strong class="lst_prevent"><span class="blind">투자자보호</span></strong>
+                    <ul class="sub">
+                        <li class="lst1_20"><a href="/sise/management.naver" onclick="clickcr(this,'siu.20','','',event);" class="off"><span class="blind">관리종목</span></a></li>
+                        <li class="lst1_29"><a href="/sise/trading_halt.naver" onclick="clickcr(this,'siu.29','','',event);" class="off"><span class="blind">거래정지종목</span></a></li>
+                        <li class="lst1_28"><a href="/sise/investment_alert.naver?type=caution" onclick="clickcr(this,'siu.28','','',event);" class="off"><span class="blind">시장경보종목</span></a></li>
+                    </ul>
+                </li>
+                <li><strong class="lst_search"><span class="blind">종목조건검색</span></strong>
+                    <ul class="sub">
+                        <li class="type1 lst2_2"><a href="/sise/item_gold.naver" onclick="clickcr(this,'sih.2','','',event);" class="off"><span class="blind">골든크로스</span></a></li>
+                        <li class="type1 lst2_1"><a href="/sise/item_gap.naver" onclick="clickcr(this,'sih.1','','',event);" class="off"><span class="blind">갭상승</span></a></li>
+                        <li class="type1 lst2_3"><a href="/sise/item_igyuk.naver" onclick="clickcr(this,'sih.3','','',event);" class="off"><span class="blind">이격도과열</span></a></li>
+                        <li class="type1 lst2_4"><a href="/sise/item_overheating_1.naver" onclick="clickcr(this,'sih.4','','',event);" class="off"><span class="blind">투심과열</span></a></li>
+                        <li class="lst2_5"><a href="/sise/item_overheating_2.naver" onclick="clickcr(this,'sih.5','','',event);" class="off"><span class="blind">상대강도과열</span></a></li>
+                    </ul>
+                </li>
+                <li><a href="/sise/report.naver"><strong class="lst_report"><span class="blind">기업 전자공시</span></strong></a></li>
+                <li class="last"><a href="/sise/short_trade.naver"><strong class="lst_short"><span class="blind">공매도 종합 현황</span></strong></a></li>
+            </ul>
+
+        </div>
+        <!-- //leftmenu -->
+
+
+        <div id="contentarea">
+            <!-- 컨텐츠 -->
+            <div id="contentarea_left" class="bnd_wid">
+                <!-- 로케이터 -->
+                <div class="sub_location tlt_bottom_line">
+                    <a href="/">증권홈</a> &gt; <a href="/sise/">국내증시</a> &gt; <a href="#">테마별 시세</a>
+                </div>
+                <h3 class="sub_tlt">테마별 시세</h3>
+                <table cellpadding="0" cellspacing="0" class="type_1" style="table-layout:fixed">
+                    <colgroup><col width="*"><col width="11%"><col width="10%"><col width="10%"><col width="10%"><col width="10%"><col width="16%">
+                    </colgroup><tbody><tr class="udline">
+                    <th rowspan="2">업종명</th>
+
+                    <th rowspan="2">전일대비</th>
+                    <th colspan="4" class="eb">전일대비 등락현황</th>
+                    <th rowspan="2">등락그래프</th>
+                </tr>
+                <tr class="udline">
+                    <th class="sub">전체</th>
+                    <th class="sub">상승</th>
+
+                    <th class="sub">보합</th>
+                    <th class="sub">하락</th>
+                </tr>
+                <tr><td colspan="7" class="blank_06"></td></tr>
+                <tr>
+                    <td style="padding-left:10px;">도시가스
+
+                        <div class="theme_info_area">
+                            <a href="javascript:;" class="btn_theme_layer" onmouseover="mouseThemeToggle(this)" onmouseout="mouseThemeToggle(this)"><span class="blind">테마 개요</span></a>
+                            <div class="info_layer_wrap" tabindex="0" style="display:none;">
+                                <strong class="info_title">도시가스</strong>
+                                <p class="info_txt">도시가스사업법에 따라 허가를 받은 사업자가 가스관을 통해 일반 수용가에 공급하는 가스공급업. 도시가스업은 대중의 일상생활에 직접적으로 미치는 영향이 크기 때문에 일반기업과 달리 공익사업으로 취급되어 요금/설비/품질 등을 법률로 규제하고 있음. 허가받은 지역내에서 독점적 지위를 유지하기 때문에 매출과 이익이 일정하고 일반적으로 배당수익률이 높기 때문에 고배당주로서 증시 침체기에 주목받는 경향이 있음.</p>
+                            </div>
+                        </div>
+
+                    </td>
+                    <td class="number">
+				<span class="tah p11 red01">
+				+5.48%
+				</span>
+                    </td>
+
+                    <td class="number">9</td>
+                    <td class="number">4</td>
+                    <td class="number">0</td>
+                    <td class="number">5</td>
+                    <td class="tc"><div class="graph_type_1" style="width:80px;"><div class="graph_bar" style="width:82%;"><span class="graph_txt">82%</span></div></div></td>
+                </tr>
+
+                <tr><td colspan="7" class="blank_03"></td></tr>
+                <tr><td colspan="7" class="division_line_1"></td></tr>
+                </tbody></table>
+                <!-- //업종별시세 -->
+            </div>
+            <!--  right area -->
+            <div id="contentarea_right">
+
+
+            </div>
+            <!-- 항목선택 -->
+
+
+
+
+
+
+
+
+
+
+
+
+            <script language="javascript">
+                function fieldSubmit() {
+                    var chkcnt = 0;
+
+                    for(i = 0; i < document.field_form.fieldIds.length ; i++) {
+                        if(document.field_form.fieldIds[i].checked == true) {
+                            chkcnt++;
+                        }
+                    }
+
+                    if(chkcnt > 6) {
+                        alert('최대 6개까지만 가능합니다.');
+                        return;
+                    }
+
+                    document.field_form.action = 'field_submit.naver';
+                    document.field_form.submit();
+                }
+
+                function fieldDefault() {
+                    document.field_form.action = 'field_del.naver';
+                    document.field_form.submit();
+
+                }
+            </script>
+            <!-- 항목선택 -->
+            <div class="box_type_l" style="margin-top:0">
+                <form name="field_form">
+                    <input type="hidden" name="menu" value="theme">
+                    <input type="hidden" name="returnUrl" value="http://finance.naver.com/sise/sise_group_detail.naver?type=theme&amp;no=176">
+                    <div class="subcnt_sise_item sub810"><div class="subcnt_sise_item_top sub810t">
+                        <table summary="원하시는 항목을 선택하여 결과를 보실 수 있습니다." cellpadding="0" cellspacing="0" class="item_list">
+                            <caption>항목 선택표</caption>
+                            <colgroup><col width="15%"><col width="15%"><col width="15%"><col width="15%"><col width="15%"><col width="15%">
+
+                            </colgroup><tbody><tr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td class="choice"><input type="checkbox" id="option1" name="fieldIds" value="quant" checked=""> <label for="option1">거래량</label></td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td><input type="checkbox" id="option2" name="fieldIds" value="ask_buy"> <label for="option2">매수호가</label></td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td class="choice"><input type="checkbox" id="option3" name="fieldIds" value="amount" checked=""> <label for="option3">거래대금</label>(백만)</td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td class="choice"><input type="checkbox" id="option4" name="fieldIds" value="market_sum" checked=""> <label for="option4">시가총액</label>(억)</td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td><input type="checkbox" id="option5" name="fieldIds" value="operating_profit"> <label for="option5">영업이익</label>(억)</td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td><input type="checkbox" id="option6" name="fieldIds" value="per"> <label for="option6">PER</label>(배)</td>
+
+                        </tr>
+
+                        <tr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td><input type="checkbox" id="option7" name="fieldIds" value="open_val"> <label for="option7">시가</label></td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td><input type="checkbox" id="option8" name="fieldIds" value="ask_sell"> <label for="option8">매도호가</label></td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td class="choice"><input type="checkbox" id="option9" name="fieldIds" value="prev_quant" checked=""> <label for="option9">전일거래량</label></td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td><input type="checkbox" id="option10" name="fieldIds" value="property_total"> <label for="option10">자산총계</label>(억)</td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td><input type="checkbox" id="option11" name="fieldIds" value="operating_profit_increasing_rate"> <label for="option11">영업이익증가율</label></td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td><input type="checkbox" id="option12" name="fieldIds" value="roe"> <label for="option12">ROE</label>(%)</td>
+
+                        </tr>
+
+                        <tr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td><input type="checkbox" id="option13" name="fieldIds" value="high_val"> <label for="option13">고가</label></td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td><input type="checkbox" id="option14" name="fieldIds" value="buy_total"> <label for="option14">매수총잔량</label></td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td class="choice"><input type="checkbox" id="option15" name="fieldIds" value="frgn_rate" checked=""> <label for="option15">외국인비율</label></td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td><input type="checkbox" id="option16" name="fieldIds" value="debt_total"> <label for="option16">부채총계</label>(억)</td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td><input type="checkbox" id="option17" name="fieldIds" value="net_income"> <label for="option17">당기순이익</label>(억)</td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td><input type="checkbox" id="option18" name="fieldIds" value="roa"> <label for="option18">ROA</label>(%)</td>
+
+                        </tr>
+
+                        <tr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td><input type="checkbox" id="option19" name="fieldIds" value="low_val"> <label for="option19">저가</label></td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td><input type="checkbox" id="option20" name="fieldIds" value="sell_total"> <label for="option20">매도총잔량</label></td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td><input type="checkbox" id="option21" name="fieldIds" value="listed_stock_cnt"> <label for="option21">상장주식수</label>(천주)</td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td><input type="checkbox" id="option22" name="fieldIds" value="sales"> <label for="option22">매출액</label>(억)</td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td><input type="checkbox" id="option23" name="fieldIds" value="eps"> <label for="option23">주당순이익</label>(원)</td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td><input type="checkbox" id="option24" name="fieldIds" value="pbr"> <label for="option24">PBR</label>(배)</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td><input type="checkbox" id="option25" name="fieldIds" value="sales_increasing_rate"> <label for="option25">매출액증가율</label></td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td><input type="checkbox" id="option26" name="fieldIds" value="dividend"> <label for="option26">보통주배당금</label>(원)</td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <td><input type="checkbox" id="option27" name="fieldIds" value="reserve_ratio"> <label for="option27">유보율</label>(%)</td>
+
+                        </tr>
+
+                        </tbody></table>
+                        <div class="item_btn">
+                            <a href="javascript:fieldSubmit()"><img src="https://ssl.pstatic.net/imgstock/images5/btn_apply.gif" alt="적용하기" width="55" height="18"></a><a href="javascript:fieldDefault()"><img src="https://ssl.pstatic.net/imgstock/images5/btn_initialize.gif" alt="초기항 목으로" width="76" height="18"></a>
+                        </div>
+                    </div></div>
+                </form></div>
+
+            <!-- //항목선택 끝 -->
+
+            <!-- //항목선택 끝 -->
+
+            <!-- 종목별 보기 -->
+            <div class="box_type_l">
+                <table summary="업종별 시세 리스트" cellpadding="0" cellspacing="0" class="type_5" style="margin:0 0 10px 0 ;">
+                    <caption>업종별 시세</caption>
+                    <colgroup>
+                        <col width="*">
+                        <col width="11%">
+                        <col width="9%">
+                        <col width="9%">
+
+                        <col width="8%">
+
+                        <col width="8%">
+
+                        <col width="8%">
+
+                        <col width="8%">
+
+                        <col width="8%">
+
+                        <col width="6%">
+                    </colgroup>
+                    <thead>
+                    <tr style="height:29px">
+                        <th colspan="2">종목명</th>
+                        <th>현재가</th>
+                        <th>전일비</th>
+                        <th>등락률</th>
+
+                        <th>거래량</th>
+
+                        <th>거래대금</th>
+
+                        <th>전일거래량</th>
+
+                        <th>시가총액</th>
+
+                        <th>외국인비율</th>
+
+                        <th>토론실</th>
+                    </tr>
+                    <tr>
+                        <td colspan="12" class="blank_09"></td>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr onmouseover="mouseOver(this)" onmouseout="mouseOut(this)" style="background-color: rgb(255, 255, 255);">
+                        <td class="name"><div class="name_area"><a href="/item/main.naver?code=117580">대성에너지</a> <span class="dot"></span></div></td>
+
+                        <td>
+                            <div class="theme_info_area">
+                                <a href="javascript:;" class="btn_history" onmouseover="mouseThemeToggle(this)" onmouseout="mouseThemeToggle(this)">
+                                    <span class="blind">테마 편입 사유</span>
+                                </a>
+
+                                <div class="info_layer_wrap" tabindex="0" style="display:none;">
+                                    <strong class="info_title">대성에너지</strong>
+                                    <p class="info_txt">대성그룹 계열의 대구지역 기반 도시가스 공급업체. 한국가스공사로부터 천연가스를 공급받아 취사용, 난방용, 냉난방공조용, 영업용 및 산업용 도시가스를 공급.</p>
+                                </div>
+                            </div>
+                        </td>
+
+
+                        <td class="number" style="padding-right:15px;">12,500</td>
+                        <td class="number" style="padding-right:15px;">
+                            <img src="https://ssl.pstatic.net/imgstock/images/images4/ico_up02.gif" width="7" height="11" style="margin-right:4px;"><span class="tah p11 red02">
+				2,880
+				</span>
+                        </td>
+                        <td class="number" style="padding-right:20px;">
+				<span class="tah p11 red01">
+				+29.94%
+				</span>
+                        </td>
+
+
+
+                        <td class="number" style="padding-right:20px;">26,671,194</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">305,765</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">7,979,393</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">3,438</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">0.09</td>
+
+
+                        <td class="center"><a href="/item/board.naver?code=117580"><img src="https://ssl.pstatic.net/imgstock/images5/ico_debatebl2.gif" width="15" height="13" alt="토론실"></a></td>
+                    </tr>
+
+                    <tr onmouseover="mouseOver(this)" onmouseout="mouseOut(this)" style="background-color: rgb(255, 255, 255);">
+                        <td class="name"><div class="name_area"><a href="/item/main.naver?code=053050">지에스이</a> <span class="dot">*</span></div></td>
+
+                        <td>
+                            <div class="theme_info_area">
+                                <a href="javascript:;" class="btn_history" onmouseover="mouseThemeToggle(this)" onmouseout="mouseThemeToggle(this)">
+                                    <span class="blind">테마 편입 사유</span>
+                                </a>
+
+                                <div class="info_layer_wrap" tabindex="0" style="display: none;">
+                                    <strong class="info_title">지에스이</strong>
+                                    <p class="info_txt">경남 서부권역 도시가스 공급업체.</p>
+                                </div>
+                            </div>
+                        </td>
+
+
+                        <td class="number" style="padding-right:15px;">4,285</td>
+                        <td class="number" style="padding-right:15px;">
+                            <img src="https://ssl.pstatic.net/imgstock/images/images4/ico_up.gif" width="7" height="6" style="margin-right:4px;" alt="상승"><span class="tah p11 red02">
+				655
+				</span>
+                        </td>
+                        <td class="number" style="padding-right:20px;">
+				<span class="tah p11 red01">
+				+18.04%
+				</span>
+                        </td>
+
+
+
+                        <td class="number" style="padding-right:20px;">47,610,843</td>
+
+
+
+                        <td class="number" style="padding-right:20px;">197,605</td>
+
+
+
+
+
+                        <td class="number" style="padding-right:20px;">5,745,019</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">1,285</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">0.75</td>
+
+
+                        <td class="center"><a href="/item/board.naver?code=053050"><img src="https://ssl.pstatic.net/imgstock/images5/ico_debatebl2.gif" width="15" height="13" alt="토론실"></a></td>
+                    </tr>
+
+                    <tr onmouseover="mouseOver(this)" onmouseout="mouseOut(this)" style="background-color: rgb(255, 255, 255);">
+                        <td class="name"><div class="name_area"><a href="/item/main.naver?code=267290">경동도시가스</a> <span class="dot"></span></div></td>
+
+                        <td>
+                            <div class="theme_info_area">
+                                <a href="javascript:;" class="btn_history" onmouseover="mouseThemeToggle(this)" onmouseout="mouseThemeToggle(this)">
+                                    <span class="blind">테마 편입 사유</span>
+                                </a>
+
+                                <div class="info_layer_wrap" tabindex="0" style="display:none;">
+                                    <strong class="info_title">경동도시가스</strong>
+                                    <p class="info_txt">기존 경동도시가스(현 경동인베스트)에서 도시가스사업부문이 인적분할돼 신규 설립된 업체. 경동홀딩스그룹 계열사로 울산광역시, 양산시(경상남도) 일대에 도시가스를 공급.</p>
+                                </div>
+                            </div>
+                        </td>
+
+
+                        <td class="number" style="padding-right:15px;">19,690</td>
+                        <td class="number" style="padding-right:15px;">
+                            <img src="https://ssl.pstatic.net/imgstock/images/images4/ico_up.gif" width="7" height="6" style="margin-right:4px;" alt="상승"><span class="tah p11 red02">
+				430
+				</span>
+                        </td>
+                        <td class="number" style="padding-right:20px;">
+				<span class="tah p11 red01">
+				+2.23%
+				</span>
+                        </td>
+
+
+
+                        <td class="number" style="padding-right:20px;">70,041</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">1,374</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">19,679</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">1,161</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">6.12</td>
+
+
+                        <td class="center"><a href="/item/board.naver?code=267290"><img src="https://ssl.pstatic.net/imgstock/images5/ico_debatebl2.gif" width="15" height="13" alt="토론실"></a></td>
+                    </tr>
+
+                    <tr onmouseover="mouseOver(this)" onmouseout="mouseOut(this)" style="background-color: rgb(255, 255, 255);">
+                        <td class="name"><div class="name_area"><a href="/item/main.naver?code=015360">예스코홀딩스</a> <span class="dot"></span></div></td>
+
+                        <td>
+                            <div class="theme_info_area">
+                                <a href="javascript:;" class="btn_history" onmouseover="mouseThemeToggle(this)" onmouseout="mouseThemeToggle(this)">
+                                    <span class="blind">테마 편입 사유</span>
+                                </a>
+
+                                <div class="info_layer_wrap" tabindex="0" style="display:none;">
+                                    <strong class="info_title">예스코홀딩스</strong>
+                                    <p class="info_txt">LS그룹 계열의 지주회사. 18년4월 기존 도시가스 사업부문을 단순/물적분할함에 따라 지주사업 영위. 서울 및 경기도 지역 등을 기반으로 도시가스를 공급하는 분할 신설업체 예스코 지분 100%를 보유.</p>
+                                </div>
+                            </div>
+                        </td>
+
+
+                        <td class="number" style="padding-right:15px;">33,400</td>
+                        <td class="number" style="padding-right:15px;">
+                            <img src="https://ssl.pstatic.net/imgstock/images/images4/ico_up.gif" width="7" height="6" style="margin-right:4px;" alt="상승"><span class="tah p11 red02">
+				350
+				</span>
+                        </td>
+                        <td class="number" style="padding-right:20px;">
+				<span class="tah p11 red01">
+				+1.06%
+				</span>
+                        </td>
+
+
+
+                        <td class="number" style="padding-right:20px;">1,531</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">51</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">4,382</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">2,004</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">9.19</td>
+
+
+                        <td class="center"><a href="/item/board.naver?code=015360"><img src="https://ssl.pstatic.net/imgstock/images5/ico_debatebl2.gif" width="15" height="13" alt="토론실"></a></td>
+                    </tr>
+
+                    <tr onmouseover="mouseOver(this)" onmouseout="mouseOut(this)" style="background-color: rgb(255, 255, 255);">
+                        <td class="name"><div class="name_area"><a href="/item/main.naver?code=034590">인천도시가스</a> <span class="dot"></span></div></td>
+
+                        <td>
+                            <div class="theme_info_area">
+                                <a href="javascript:;" class="btn_history" onmouseover="mouseThemeToggle(this)" onmouseout="mouseThemeToggle(this)">
+                                    <span class="blind">테마 편입 사유</span>
+                                </a>
+
+                                <div class="info_layer_wrap" tabindex="0" style="display:none;">
+                                    <strong class="info_title">인천도시가스</strong>
+                                    <p class="info_txt">도시가스 공급업을 주요사업으로 영위. 인천광역시 부평구, 계양구, 서구, 강화군 전 지역과 남동구, 중구(영종도), 동구 일부 지역 및 김포시 대곶면, 월곶면 전지역 및 양촌읍 일부지역에 도시가스를 공급중.</p>
+                                </div>
+                            </div>
+                        </td>
+
+
+                        <td class="number" style="padding-right:15px;">25,450</td>
+                        <td class="number" style="padding-right:15px;">
+                            <img src="https://ssl.pstatic.net/imgstock/images/images4/ico_down.gif" width="7" height="6" style="margin-right:4px;" alt="하락"><span class="tah p11 nv01">
+				50
+				</span>
+                        </td>
+                        <td class="number" style="padding-right:20px;">
+				<span class="tah p11 nv01">
+				-0.20%
+				</span>
+                        </td>
+
+
+
+                        <td class="number" style="padding-right:20px;">1,178</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">29</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">406</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">1,113</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">2.24</td>
+
+
+                        <td class="center"><a href="/item/board.naver?code=034590"><img src="https://ssl.pstatic.net/imgstock/images5/ico_debatebl2.gif" width="15" height="13" alt="토론실"></a></td>
+                    </tr>
+
+                    <tr onmouseover="mouseOver(this)" onmouseout="mouseOut(this)" style="background-color: rgb(255, 255, 255);">
+                        <td class="name"><div class="name_area"><a href="/item/main.naver?code=004690">삼천리</a> <span class="dot"></span></div></td>
+
+                        <td>
+                            <div class="theme_info_area">
+                                <a href="javascript:;" class="btn_history" onmouseover="mouseThemeToggle(this)" onmouseout="mouseThemeToggle(this)">
+                                    <span class="blind">테마 편입 사유</span>
+                                </a>
+
+                                <div class="info_layer_wrap" tabindex="0" style="display:none;">
+                                    <strong class="info_title">삼천리</strong>
+                                    <p class="info_txt">경기도 서/남부 지역과 인천광역시 일부 지역에 도시가스를 공급중인 도시가스 공급 업체.</p>
+                                </div>
+                            </div>
+                        </td>
+
+
+                        <td class="number" style="padding-right:15px;">92,100</td>
+                        <td class="number" style="padding-right:15px;">
+                            <img src="https://ssl.pstatic.net/imgstock/images/images4/ico_down.gif" width="7" height="6" style="margin-right:4px;" alt="하락"><span class="tah p11 nv01">
+				200
+				</span>
+                        </td>
+                        <td class="number" style="padding-right:20px;">
+				<span class="tah p11 nv01">
+				-0.22%
+				</span>
+                        </td>
+
+
+
+                        <td class="number" style="padding-right:20px;">10,844</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">998</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">19,933</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">3,735</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">8.01</td>
+
+
+                        <td class="center"><a href="/item/board.naver?code=004690"><img src="https://ssl.pstatic.net/imgstock/images5/ico_debatebl2.gif" width="15" height="13" alt="토론실"></a></td>
+                    </tr>
+
+                    <tr onmouseover="mouseOver(this)" onmouseout="mouseOut(this)">
+                        <td class="name"><div class="name_area"><a href="/item/main.naver?code=016710">대성홀딩스</a> <span class="dot"></span></div></td>
+
+                        <td>
+                            <div class="theme_info_area">
+                                <a href="javascript:;" class="btn_history" onmouseover="mouseThemeToggle(this)" onmouseout="mouseThemeToggle(this)">
+                                    <span class="blind">테마 편입 사유</span>
+                                </a>
+
+                                <div class="info_layer_wrap" tabindex="0" style="display:none;">
+                                    <strong class="info_title">대성홀딩스</strong>
+                                    <p class="info_txt">대성그룹 계열로 종속회사 업무지원 등을 위한 경영지원본부 역할을 하고 있으며, 가스제조 및 공급업체 대성에너지와 대성청정에너지 등을 자회사로 보유.</p>
+                                </div>
+                            </div>
+                        </td>
+
+
+                        <td class="number" style="padding-right:15px;">9,660</td>
+                        <td class="number" style="padding-right:15px;">
+                            <img src="https://ssl.pstatic.net/imgstock/images/images4/ico_down.gif" width="7" height="6" style="margin-right:4px;" alt="하락"><span class="tah p11 nv01">
+				40
+				</span>
+                        </td>
+                        <td class="number" style="padding-right:20px;">
+				<span class="tah p11 nv01">
+				-0.41%
+				</span>
+                        </td>
+
+
+
+                        <td class="number" style="padding-right:20px;">49,982</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">482</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">45,392</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">1,554</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">2.30</td>
+
+
+                        <td class="center"><a href="/item/board.naver?code=016710"><img src="https://ssl.pstatic.net/imgstock/images5/ico_debatebl2.gif" width="15" height="13" alt="토론실"></a></td>
+                    </tr>
+
+                    <tr onmouseover="mouseOver(this)" onmouseout="mouseOut(this)">
+                        <td class="name"><div class="name_area"><a href="/item/main.naver?code=036460">한국가스공사</a> <span class="dot"></span></div></td>
+
+                        <td>
+                            <div class="theme_info_area">
+                                <a href="javascript:;" class="btn_history" onmouseover="mouseThemeToggle(this)" onmouseout="mouseThemeToggle(this)">
+                                    <span class="blind">테마 편입 사유</span>
+                                </a>
+
+                                <div class="info_layer_wrap" tabindex="0" style="display:none;">
+                                    <strong class="info_title">한국가스공사</strong>
+                                    <p class="info_txt">천연가스 도입 및 도매시장에서 독점적 지위를 보유한 정부출자 공기업. 해외의 천연가스 생산지로부터 LNG를 도입하여 국내의 발전사 및 도시가스사에 공급.</p>
+                                </div>
+                            </div>
+                        </td>
+
+
+                        <td class="number" style="padding-right:15px;">23,550</td>
+                        <td class="number" style="padding-right:15px;">
+                            <img src="https://ssl.pstatic.net/imgstock/images/images4/ico_down.gif" width="7" height="6" style="margin-right:4px;" alt="하락"><span class="tah p11 nv01">
+				100
+				</span>
+                        </td>
+                        <td class="number" style="padding-right:20px;">
+				<span class="tah p11 nv01">
+				-0.42%
+				</span>
+                        </td>
+
+
+
+                        <td class="number" style="padding-right:20px;">76,693</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">1,809</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">150,603</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">21,740</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">5.32</td>
+
+
+                        <td class="center"><a href="/item/board.naver?code=036460"><img src="https://ssl.pstatic.net/imgstock/images5/ico_debatebl2.gif" width="15" height="13" alt="토론실"></a></td>
+                    </tr>
+
+                    <tr onmouseover="mouseOver(this)" onmouseout="mouseOut(this)">
+                        <td class="name"><div class="name_area"><a href="/item/main.naver?code=017390">서울가스</a> <span class="dot"></span></div></td>
+
+                        <td>
+                            <div class="theme_info_area">
+                                <a href="javascript:;" class="btn_history" onmouseover="mouseThemeToggle(this)" onmouseout="mouseThemeToggle(this)">
+                                    <span class="blind">테마 편입 사유</span>
+                                </a>
+
+                                <div class="info_layer_wrap" tabindex="0" style="display:none;">
+                                    <strong class="info_title">서울가스</strong>
+                                    <p class="info_txt">서울지역(11개구), 경기지역(고양, 김포, 파주 등) 도시가스 공급업체.</p>
+                                </div>
+                            </div>
+                        </td>
+
+
+                        <td class="number" style="padding-right:15px;">59,600</td>
+                        <td class="number" style="padding-right:15px;">
+                            <img src="https://ssl.pstatic.net/imgstock/images/images4/ico_down.gif" width="7" height="6" style="margin-right:4px;" alt="하락"><span class="tah p11 nv01">
+				400
+				</span>
+                        </td>
+                        <td class="number" style="padding-right:20px;">
+				<span class="tah p11 nv01">
+				-0.67%
+				</span>
+                        </td>
+
+
+
+                        <td class="number" style="padding-right:20px;">14,253</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">850</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">15,703</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">2,980</td>
+
+
+
+
+                        <td class="number" style="padding-right:20px;">3.11</td>
+
+
+                        <td class="center"><a href="/item/board.naver?code=017390"><img src="https://ssl.pstatic.net/imgstock/images5/ico_debatebl2.gif" width="15" height="13" alt="토론실"></a></td>
+                    </tr>
+
+                    <tr><td colspan="12" class="blank_09"></td></tr>
+                    <tr><td colspan="12" class="division_line_1"></td></tr>
+                    </tbody>
+                </table>
+                <div class="common_btn">
+                    <span class="sise_guide_txt"><em>※</em> * 는 <span class="org">코스닥</span> <span>종목</span>입니다.</span>
+
+
+
+                    <div class="sise_btn_array btn_martop"><a href="theme.naver"><img src="https://ssl.pstatic.net/imgstock/images5/btn_theme_all.gif" width="121" height="23" border="0" alt="테마별시세전체보기" valign=""></a></div>
+
+
+
+
+                </div>
+            </div>
+            <!-- //종목별 보기 -->
+
+            <!-- //컨텐츠 -->
+        </div>
+    </div>
+
+
+
+    <div id="footer">
+
+        <ul>
+            <li class="first">
+                <a href="https://new-m.pay.naver.com/member/terms-policy/naver-financial-service" onclick="clickcr(this, 'fot.service', '', '', event);" target="_blank">이용약관</a>
+            </li>
+            <li>
+                <a href="https://new-m.pay.naver.com/member/terms-policy/privacy" onclick="clickcr(this, 'fot.privacy', '', '', event);" target="_blank"><strong>개인정보처리방침</strong></a>
+            </li>
+            <li>
+                <a href="/rules.naver" onclick="clickcr(this, 'fot.policy', '', '', event);" target="_blank">게시판 운영원칙</a>
+            </li>
+            <li>
+                <a href="https://help.naver.com/alias/contents2/finance/finance_1.naver" onclick="clickcr(this, 'fot.help', '', '', event);" target="_blank">증권 고객센터</a>
+            </li>
+        </ul>
+        <p class="desc">
+            네이버파이낸셜(주)이 제공하는 금융 정보는 <a href="javascript:;" onclick="togglePanelFooter('footerPanel0');" class="desc_help">콘텐츠 제공업체</a>로부터 받는 투자 참고사항이며, 오류가 발생하거나 지연될 수 있습니다.<br>
+            네이버파이낸셜(주)과 콘텐츠 제공업체는 제공된 정보에 의한 투자 결과에 법적인 책임을 지지 않습니다. 게시된 정보는 무단으로 배포할 수 없습니다.
+        </p>
+        <address>
+            <a href="https://www.naverfincorp.com/" target="_blank" class="logo" onclick="clickcr(this, 'fot.nhn', '', '', event);"><img src="https://ssl.pstatic.net/static/nfinance/img/logo_financial.png" width="160" height="12" alt="NAVER FINANCIAL"></a>
+        </address>
+        <div id="footerPanel0" class="provider_layer" style="display:none" tabindex="0" onblur="hidePannel('footerPanel0')">
+            <strong class="provider_layer__tit">네이버파이낸셜에 콘텐츠 제공</strong>
+            <div class="provider_layer__txt">
+                <strong>에프앤가이드</strong> 기업 및 재무정보<br>
+                <strong>KG제로인</strong> 해외 시세, 시장지표 정보<br>
+                <strong>한국예탁결제원</strong> 주주총회일, 전자투표 정보<br>
+                <strong>인포스탁</strong> 국내 테마 정보
+            </div>
+            <div class="provider_layer__info">
+                <strong class="provider_layer__tit">네이버에 콘텐츠 제공</strong>
+                <div class="provider_layer__txt">
+                    <strong>코스콤</strong> 국내 시세 정보
+                </div>
+            </div>
+            <button type="button" class="button_close" onclick="hidePannel('footerPanel0')">
+                <img src="https://ssl.pstatic.net/static/nfinance/2022/footer_close.png" width="20" height="20" alt="닫기">
+            </button>
+        </div>
+
+
+
+
+    </div>
+
+
+
+    <script type="text/javascript">
+        function isVisible(obj) {
+            if (obj == document) return true
+
+            if (!obj) return false
+            if (!obj.parentNode) return false
+            if (obj.style) {
+                if (obj.style.display == 'none') return false
+                if (obj.style.visibility == 'hidden') return false
+            }
+
+            if (window.getComputedStyle) {
+                var style = window.getComputedStyle(obj, "")
+                if (style.display == 'none') return false
+                if (style.visibility == 'hidden') return false
+            }
+
+            var style = obj.currentStyle
+            if (style) {
+                if (style['display'] == 'none') return false
+                if (style['visibility'] == 'hidden') return false
+            }
+
+            return isVisible(obj.parentNode)
+        }
+
+        function isChildOf(myobj, containerObj) {
+            while(myobj != undefined) {
+                if (myobj == document.body) {
+                    break;
+                }
+                if (myobj == containerObj) {
+                    return true;
+                }
+                myobj = myobj.parentElement;
+            }
+            return false;
+        }
+
+        function gnbLayerClose(e){
+            var target = e.target ? e.target : e.srcElement;
+            if (isVisible(document.getElementById('gnb_service_lyr')) || isVisible(document.getElementById('gnb_notice_lyr')) ||isVisible(document.getElementById('gnb_my_lyr')) ) {
+                if (!isChildOf(target, document.getElementById('gnb'))) {
+                    gnbAllLayerClose();
+                }
+            }
+        }
+
+        var isIE = (navigator.userAgent.toLowerCase().indexOf("msie")!=-1 && window.document.all) ? true:false;
+        if (isIE) {
+            document.attachEvent('onmousedown', gnbLayerClose);
+        } else {
+            window.addEventListener('mousedown', gnbLayerClose);
+        }
+
+        function showPannel(layerId){
+            var layer = jindo.$(layerId);
+            layer.style.display='block';
+
+            if (layerId == "summary_lyr") {
+                var layerHeight = jindo.$Element(layer).height();
+                jindo.$Element("summary_ifr").height(layerHeight);
+            }
+        }
+
+        function hidePannel(layerId){
+            var layer = jindo.$(layerId);
+            layer.style.display='none';
+        }
+
+        function togglePanelFooter(layerId) {
+            var elTargetLayer = jindo.$Element(jindo.$$.getSingle("#" + layerId));
+
+            if (elTargetLayer != null) {
+                if (elTargetLayer.visible()) {
+                    hidePannel(layerId);
+                } else {
+                    showPannel(layerId);
+                }
+            }
+        }
+
+        // add data-useragent
+        document.documentElement.setAttribute('data-useragent',navigator.userAgent);
+
+        // _replaceNewsLink class 하위의 a 태그 조회 후 redirect
+        jindo.$Fn(function () {
+            jindo.$$("._replaceNewsLink a").forEach(function(ele){
+                var urls = ele.href.split("?");
+                if (urls[0].indexOf("/news_read.naver") > 0 || urls[0].indexOf("/newsRead.naver") > 0) {
+                    var param = jindo.$S(urls[1]).parseString();
+                    var oid = param.office_id ? param.office_id : param.officeId;
+                    var aid = param.article_id ? param.article_id : param.articleId;
+
+                    ele.target = "_blank";
+                    ele.href = jindo.$S("https://n.news.naver.com/mnews/article/%s/%s").format(oid, aid);
+                }
+            });
+        }).attach(document, "domready");
+    </script>
+
+</div>
+
+
+</body>
+</html>
