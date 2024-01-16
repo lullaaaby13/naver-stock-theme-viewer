@@ -5,7 +5,7 @@ import ThemeService from './theme.service';
 export default class ThemeController {
     constructor(private readonly themeService: ThemeService) {}
     @Get()
-    async getThemes() {
-        return [];
+    async list() {
+        return this.themeService.list();
     }
 }

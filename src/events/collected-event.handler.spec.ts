@@ -4,6 +4,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import ThemeService from '../theme/theme.service';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
+import StockService from '../stock/stock.service';
 
 describe('CollectedEventHandler', () => {
     let handler;
@@ -16,7 +17,13 @@ describe('CollectedEventHandler', () => {
                 {
                     provide: ThemeService,
                     useValue: {
-                        create: jest.fn(),
+                        save: jest.fn(),
+                    },
+                },
+                {
+                    provide: StockService,
+                    useValue: {
+                        save: jest.fn(),
                     },
                 },
             ],
@@ -34,6 +41,15 @@ describe('CollectedEventHandler', () => {
         handler.handleThemCollectedEvent({
             code: '176',
             url: 'https://finance.naver.com/sise/sise_group_detail.naver?type=theme&no=176',
+            html: html,
+        });
+    });
+
+    it('handleStockCollectedEvent', () => {
+        const html = readFileSync(resolve(__dirname, 'data', 'stock.html'), 'utf8');
+        handler.handleStockCollectedEvent({
+            code: '323410', // 카카오뱅크
+            url: 'https://finance.naver.com/item/main.naver?code=005930',
             html: html,
         });
     });

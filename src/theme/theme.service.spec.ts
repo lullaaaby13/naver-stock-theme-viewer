@@ -35,7 +35,7 @@ describe('ThemeService', () => {
 
     it('should return an array of themes', async () => {
         mockThemeRepository.push(new Theme('abcd', 'Test Theme', 10, 100, 1000, 10000));
-        const themes = await service.getThemes();
+        const themes = await service.list();
         expect(themes).toEqual([new Theme('abcd', 'Test Theme', 10, 100, 1000, 10000)]);
     });
 });

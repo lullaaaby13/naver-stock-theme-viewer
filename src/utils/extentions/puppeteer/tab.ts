@@ -73,7 +73,7 @@ export class TabPool {
             // if (Date.now() - start > this.fetchTabTimeout) {
             //     throw new Error('탭을 가져올 수 없습니다.');
             // }
-            await delay(500);
+            await delay(250);
         }
     }
 }

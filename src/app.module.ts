@@ -12,7 +12,7 @@ import ThemeModule from './theme/theme.module';
         //     user: 'naver-stock-viewer',
         //     pass: 'naver-stock-viewer',
         // }),
-        MongooseModule.forRoot('mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.10.3'),
+        MongooseModule.forRoot('mongodb://127.0.0.1:27017/naver-stock-viewer?directConnection=true&serverSelectionTimeoutMS=2000'),
         EventEmitterModule.forRoot({
             // set this to `true` to use wildcards
             wildcard: false,
