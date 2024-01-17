@@ -9,13 +9,14 @@ import { ConfigService } from '@nestjs/config';
 @Injectable()
 export default class CollectAllThemesCrawler extends Crawler {
     private readonly NUMBER_OF_TABS;
-    private readonly headless = process.env.NODE_ENV === 'production';
+    private readonly headless;
     constructor(
         private configService: ConfigService,
         private eventEmitter: EventEmitter2,
     ) {
         super('https://finance.naver.com');
-        this.NUMBER_OF_TABS = this.configService.get<number>('COLLECT_ALL_THEMES_CRAWLER_TAB');
+        this.NUMBER_OF_TABS = Number(this.configService.get<number>('COLLECT_ALL_THEMES_CRAWLER_TAB'));
+        this.headless = Boolean(this.configService.get<boolean>('HEADLESS'));
     }
 
     async execute() {
