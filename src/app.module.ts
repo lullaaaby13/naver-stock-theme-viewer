@@ -4,6 +4,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import CrawlerModule from './crawler/crawler.module';
 import EventModule from './events/event.module';
 import ThemeModule from './theme/theme.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import SchedulerModule from './scheduler/scheduler.module';
 
 @Module({
     imports: [
@@ -29,10 +31,11 @@ import ThemeModule from './theme/theme.module';
             // disable throwing uncaughtException if an error event is emitted and it has no listeners
             ignoreErrors: false,
         }),
-        // LoggerModule,
+        ScheduleModule.forRoot(),
         CrawlerModule,
         EventModule,
         ThemeModule,
+        SchedulerModule,
     ],
 })
 export class AppModule {}
