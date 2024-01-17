@@ -16,7 +16,8 @@ export default class CollectStocksCrawler extends Crawler {
     ) {
         super('https://finance.naver.com');
         this.NUMBER_OF_TABS = this.configService.get<number>('COLLECT_STOCKS_CRAWLER_TAB');
-        this.headless = Boolean(this.configService.get<boolean>('HEADLESS'));
+        const headless = this.configService.get<string>('HEADLESS');
+        this.headless = headless === 'true' || headless === 'new' ? 'new' : false;
     }
 
     async execute(stockCodes: string[]): Promise<void> {
