@@ -1,12 +1,11 @@
 import ThemeService from '../theme/theme.service';
 import { Injectable, Logger } from '@nestjs/common';
 import { StockCollectedEvent, ThemeCollectedEvent } from './model';
-import { OnEvent } from '@nestjs/event-emitter';
+import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 import * as cheerio from 'cheerio';
 import StockService from '../stock/stock.service';
 import { DateTimeFormatter, YearMonth } from '@js-joda/core';
 import { CreateUpdateStockRequest } from '../stock/model';
-import { prevAll } from 'cheerio/lib/api/traversing';
 
 @Injectable()
 export default class CollectedEventHandler {
@@ -14,6 +13,7 @@ export default class CollectedEventHandler {
     constructor(
         private readonly themeService: ThemeService,
         private readonly stockService: StockService,
+        private readonly eventEmitter: EventEmitter2,
     ) {}
 
     @OnEvent('theme.collected', { async: true })
@@ -101,6 +101,11 @@ export default class CollectedEventHandler {
             //     .filter(yearMonth => !!yearMonth);
         } catch (error) {
             this.logger.error(`주식 수집 에러 [코드 = ${payload.code}, 주소 = ${payload.url}]`);
+            this.eventEmitter.emit('error', {
+                from: 'stock.collected',
+                args: [payload],
+                error,
+            });
         }
 
         await this.stockService.save(request);

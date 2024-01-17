@@ -9,3 +9,9 @@ export interface StockCollectedEvent {
     url: string;
     html: string;
 }
+
+export interface ErrorEvent {
+    from: string;
+    args: [];
+    error: Error;
+}

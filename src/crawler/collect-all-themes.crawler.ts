@@ -8,12 +8,13 @@ import Crawler from './crawler';
 @Injectable()
 export default class CollectAllThemesCrawler extends Crawler {
     private readonly NUMBER_OF_TABS = 10;
+    private readonly headless = process.env.NODE_ENV === 'production';
     constructor(private eventEmitter: EventEmitter2) {
         super('https://finance.naver.com');
     }
 
     async execute() {
-        this.browser = await launch({ headless: false, defaultViewport: { width: 1920, height: 1080 } });
+        this.browser = await launch({ headless: this.headless, defaultViewport: { width: 1920, height: 1080 } });
         const page = await this.browser.newPage();
         const tabPool = new TabPool(this.browser, this.NUMBER_OF_TABS, 1000 * 10);
 
