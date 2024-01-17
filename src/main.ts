@@ -5,9 +5,10 @@ import './utils/extentions/common/index';
 import { winstonLogger } from './winston.logger';
 
 console.log('isDevelopment', process.env.NODE_ENV === 'development');
+const port = process.env.PORT || 3000;
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     app.useLogger(winstonLogger);
-    await app.listen(3000);
+    await app.listen(port).then(() => console.log(`Server is listening on port ${port}`));
 }
 bootstrap();
