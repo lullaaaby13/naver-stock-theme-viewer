@@ -4,13 +4,18 @@ import { TabPool } from '../utils/extentions/puppeteer/tab';
 import { substringAfter } from '../utils/extentions/common/string-utils';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import Crawler from './crawler';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export default class CollectAllThemesCrawler extends Crawler {
-    private readonly NUMBER_OF_TABS = 10;
+    private readonly NUMBER_OF_TABS;
     private readonly headless = process.env.NODE_ENV === 'production';
-    constructor(private eventEmitter: EventEmitter2) {
+    constructor(
+        private configService: ConfigService,
+        private eventEmitter: EventEmitter2,
+    ) {
         super('https://finance.naver.com');
+        this.NUMBER_OF_TABS = this.configService.get<number>('COLLECT_ALL_THEMES_CRAWLER_TAB');
     }
 
     async execute() {

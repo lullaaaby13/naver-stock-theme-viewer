@@ -4,13 +4,18 @@ import Crawler from './crawler';
 import { launch } from 'puppeteer';
 import { TabPool } from '../utils/extentions/puppeteer/tab';
 import { substringAfter } from '../utils/extentions/common/string-utils';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export default class CollectStocksCrawler extends Crawler {
-    private readonly NUMBER_OF_TABS = 20;
+    private readonly NUMBER_OF_TABS;
     private readonly headless = process.env.NODE_ENV === 'production';
-    constructor(private eventEmitter: EventEmitter2) {
+    constructor(
+        private configService: ConfigService,
+        private eventEmitter: EventEmitter2,
+    ) {
         super('https://finance.naver.com');
+        this.NUMBER_OF_TABS = this.configService.get<number>('COLLECT_STOCKS_CRAWLER_TAB');
     }
 
     async execute(stockCodes: string[]): Promise<void> {

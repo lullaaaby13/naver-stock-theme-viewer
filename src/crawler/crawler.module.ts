@@ -8,5 +8,6 @@ import StockModule from '../stock/stock.module';
     imports: [StockModule],
     controllers: [CrawlerController],
     providers: [CollectAllThemesCrawler, CollectStocksCrawler],
+    exports: [CollectAllThemesCrawler, CollectStocksCrawler],
 })
 export default class CrawlerModule {}

@@ -6,6 +6,8 @@ import EventModule from './events/event.module';
 import ThemeModule from './theme/theme.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import SchedulerModule from './scheduler/scheduler.module';
+import { ConfigModule } from '@nestjs/config';
+import * as Joi from 'joi';
 
 @Module({
     imports: [
@@ -32,6 +34,14 @@ import SchedulerModule from './scheduler/scheduler.module';
             ignoreErrors: false,
         }),
         ScheduleModule.forRoot(),
+        ConfigModule.forRoot({
+            isGlobal: true,
+            envFilePath: `.${process.env.NODE_ENV}.env`,
+            validationSchema: Joi.object({
+                NODE_ENV: Joi.string().valid('development', 'production').default('development'),
+                PORT: Joi.number().default(3000),
+            }),
+        }),
         CrawlerModule,
         EventModule,
         ThemeModule,
