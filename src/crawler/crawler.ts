@@ -1,4 +1,4 @@
-import { Browser } from 'puppeteer';
+import { Browser, launch } from 'puppeteer';
 
 export default abstract class Crawler {
     protected readonly baseURL: string = '';
@@ -26,6 +26,14 @@ export default abstract class Crawler {
     }
 
     protected abstract execute(args?: any[]): Promise<void>;
+
+    protected async launch(headless: boolean | 'new' = 'new') {
+        this.browser = await launch({
+            headless: headless,
+            defaultViewport: { width: 1920, height: 1080 },
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        });
+    }
     public async terminate() {
         if (this.browser) {
             await this.browser.close();

@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import Crawler from './crawler';
-import { launch } from 'puppeteer';
 import { TabPool } from '../utils/extentions/puppeteer/tab';
 import { substringAfter } from '../utils/extentions/common/string-utils';
 import { ConfigService } from '@nestjs/config';
@@ -21,7 +20,7 @@ export default class CollectStocksCrawler extends Crawler {
     }
 
     async execute(stockCodes: string[]): Promise<void> {
-        this.browser = await launch({ headless: this.headless, defaultViewport: { width: 1920, height: 1080 } });
+        await this.launch(this.headless);
         const tabPool = new TabPool(this.browser, this.NUMBER_OF_TABS, 1000 * 10);
 
         const urls = stockCodes.map(stockCode => `${this.baseURL}/item/main.naver?code=${stockCode}`);

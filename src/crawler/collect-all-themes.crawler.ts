@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { launch, Page } from 'puppeteer';
+import { Page } from 'puppeteer';
 import { TabPool } from '../utils/extentions/puppeteer/tab';
 import { substringAfter } from '../utils/extentions/common/string-utils';
 import { EventEmitter2 } from '@nestjs/event-emitter';
@@ -21,7 +21,7 @@ export default class CollectAllThemesCrawler extends Crawler {
     }
 
     async execute() {
-        this.browser = await launch({ headless: this.headless, defaultViewport: { width: 1920, height: 1080 } });
+        await this.launch(this.headless);
         const page = await this.browser.newPage();
         const tabPool = new TabPool(this.browser, this.NUMBER_OF_TABS, 1000 * 10);
 
